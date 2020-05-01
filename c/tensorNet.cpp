@@ -716,7 +716,11 @@ bool tensorNet::LoadNetwork( const char* prototxt_path_, const char* model_path_
 {
 	if( /*!prototxt_path_ ||*/ !model_path_ )
 		return false;
-
+    //******* matias edit *******
+    //precision = TYPE_INT8;
+    precision = TYPE_FP16;
+    device = DEVICE_DLA_1;
+    //*******************
 #if NV_TENSORRT_MAJOR >= 4
 	printf(LOG_TRT "TensorRT version %u.%u.%u\n", NV_TENSORRT_MAJOR, NV_TENSORRT_MINOR, NV_TENSORRT_PATCH);
 #else
@@ -796,7 +800,9 @@ bool tensorNet::LoadNetwork( const char* prototxt_path_, const char* model_path_
 		if( !calibrator )
 			printf(LOG_TRT "requested fasted precision for device %s without providing valid calibrator, disabling INT8\n", deviceTypeToStr(device));
 
-		precision = FindFastestPrecision(device, (calibrator != NULL));
+		//precision = FindFastestPrecision(device, (calibrator != NULL));
+        //printf(LOG_TRT "requested fasted precision for device %s, setting INT8\n anyway", deviceTypeToStr(device));
+        //precision = FindFastestPrecision(device, true);
 		printf(LOG_TRT "selecting fastest native precision for %s:  %s\n", deviceTypeToStr(device), precisionTypeToStr(precision));
 	}
 	else

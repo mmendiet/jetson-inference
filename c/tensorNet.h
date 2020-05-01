@@ -360,8 +360,14 @@ public:
 		{
 			const profilerQuery query = (profilerQuery)n;
 
-			if( PROFILER_QUERY(query) )
+			if( PROFILER_QUERY(query) ) {
 				printf(LOG_TRT "%-12s  CPU %9.5fms  CUDA %9.5fms\n", profilerQueryToStr(query), mProfilerTimes[n].x, mProfilerTimes[n].y);
+                //********
+                //******* matias edit *******
+                FILE *pFile2 = fopen("results/FP16.csv", "a");
+                fprintf(pFile2, "%s,CPU,%f,ms,CUDA,%f,ms\n", profilerQueryToStr(query), mProfilerTimes[n].x, mProfilerTimes[n].y);
+                //************
+            }
 		}
 
 		printf(LOG_TRT "------------------------------------------------\n\n");
